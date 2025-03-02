@@ -136,16 +136,8 @@ namespace Chaos.NaCl
             FieldOperations.fe_frombytes(out edwardsY, publicKey.Array, publicKey.Offset);
             FieldOperations.fe_1(out edwardsZ);
             MontgomeryCurve25519.EdwardsToMontgomeryX(out montgomeryX, ref edwardsY, ref edwardsZ);
-            byte[] h;
-            SHA512 sha512 = SHA512.Create();
-            try
-            {
-                h = sha512.ComputeHash(privateKey.Array, privateKey.Offset, 32);//ToDo: Remove alloc
-            }
-            finally
-            {
-                sha512.Dispose();
-            }
+            using SHA512 sha512 = SHA512.Create();
+            byte[] h = sha512.ComputeHash(privateKey.Array, privateKey.Offset, 32);//ToDo: Remove alloc
             ScalarOperations.sc_clamp(h, 0);
             MontgomeryOperations.scalarmult(out sharedMontgomeryX, h, 0, ref montgomeryX);
             FieldOperations.fe_tobytes(sharedKey.Array, sharedKey.Offset, ref sharedMontgomeryX);

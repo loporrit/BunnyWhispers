@@ -49,7 +49,7 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
 			byte[] r;
 			byte[] hram;
 			GroupElementP3 R;
-		    SHA512 sha512 = SHA512.Create();
+		    using SHA512 sha512 = SHA512.Create();
 			{
                 sha512.TransformFinalBlock(sk, skoffset, 32);
 				az = sha512.Hash;
@@ -77,7 +77,6 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
 				ScalarOperations.sc_muladd(s, hram, az, r);
 				Array.Copy(s, 0, sig, sigoffset + 32, 32);
 			}
-			sha512.Dispose();
 		}
 	}
 }

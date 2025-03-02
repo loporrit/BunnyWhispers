@@ -60,12 +60,11 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
             if (GroupOperations.ge_frombytes_negate_vartime(out A, pk, pkoffset) != 0)
                 return false;
 
-            SHA512 sha512 = SHA512.Create();
+            using SHA512 sha512 = SHA512.Create();
             sha512.TransformBlock(sig, sigoffset, 32, null, 0);
             sha512.TransformBlock(pk, pkoffset, 32, null, 0);
             sha512.TransformFinalBlock(m, moffset, mlen);
             h = sha512.Hash;
-            sha512.Dispose();
 
             ScalarOperations.sc_reduce(h);
 
