@@ -18,19 +18,18 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
         //public static readonly FieldElement Zero = new FieldElement();
         //public static readonly FieldElement One = new FieldElement() { x0 = 1 };
 
-        internal FieldElement(params int[] elements)
+        internal FieldElement(int a0, int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9)
         {
-            InternalAssert.Assert(elements.Length == 10, "elements.Length != 10");
-            x0 = elements[0];
-            x1 = elements[1];
-            x2 = elements[2];
-            x3 = elements[3];
-            x4 = elements[4];
-            x5 = elements[5];
-            x6 = elements[6];
-            x7 = elements[7];
-            x8 = elements[8];
-            x9 = elements[9];
+            x0 = a0;
+            x1 = a1;
+            x2 = a2;
+            x3 = a3;
+            x4 = a4;
+            x5 = a5;
+            x6 = a6;
+            x7 = a7;
+            x8 = a8;
+            x9 = a9;
         }
     }
 }

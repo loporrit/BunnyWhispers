@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Security.Cryptography;
-using Chaos.NaCl.Internal;
 using Chaos.NaCl.Internal.Ed25519Ref10;
 
 namespace Chaos.NaCl

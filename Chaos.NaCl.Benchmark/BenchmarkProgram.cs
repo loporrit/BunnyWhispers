@@ -5,7 +5,6 @@ using System.Linq;
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Threading;
-using Chaos.NaCl.Internal;
 
 namespace Chaos.NaCl.Benchmark
 {
