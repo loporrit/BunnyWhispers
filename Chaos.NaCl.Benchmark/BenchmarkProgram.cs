@@ -12,6 +12,8 @@ namespace Chaos.NaCl.Benchmark
 {
     public class BenchmarkProgram
     {
+        public const int CpuFreq = 5000;
+
         static void Benchmark(string name, Action action, int n, int bytes = 0)
         {
             Console.ForegroundColor = ConsoleColor.White;
@@ -31,7 +33,6 @@ namespace Chaos.NaCl.Benchmark
                 values[i] = (float)thisIteration;
             }
             var total = (DateTime.UtcNow - start).TotalSeconds;
-            Cpu.CheckCurrentCpuFreq();
             var perIteration = total / n;
             Array.Sort(values);
             double sum = values.Sum();
@@ -54,8 +55,8 @@ namespace Chaos.NaCl.Benchmark
             double relativeDelta75 = delta75 / median;
             double average75 = values.Where(x => (x >= low75) && (x <= high75)).Average();
 
-            Console.WriteLine("{0} us / {1} per second / {2} cycles",
-                Math.Round(average90 * 1E6, 2), Math.Round(1 / average90), Math.Round(average90 * Cpu.CpuFreq * 1E6));
+            Console.WriteLine("{0} us / {1} per second",
+                Math.Round(average90 * 1E6, 2), Math.Round(1 / average90));
             Console.WriteLine("Average {0} us, Median {1} us, min {2}, max {3}", Math.Round(average * 1E6, 2),
                               Math.Round(median * 1E6, 2), Math.Round(min * 1E6, 2), Math.Round(max * 1E6, 2));
             Console.WriteLine("80% within ±{0}% average {1} | 50% within ±{2}% average {3}",
@@ -64,9 +65,8 @@ namespace Chaos.NaCl.Benchmark
             if (bytes > 0)
             {
                 double bytesPerSecond = bytes / average90;
-                double cyclesPerByte = (Cpu.CpuFreq * 1E6) / bytesPerSecond;
-                Console.WriteLine("{0} MB/s / {1} cycles/byte",
-                    Math.Round(bytesPerSecond / 1E6, 2), Math.Round(cyclesPerByte, 2));
+                Console.WriteLine("{0} MB/s",
+                    Math.Round(bytesPerSecond / 1E6, 2));
             }
             Console.WriteLine();
         }
@@ -77,10 +77,8 @@ namespace Chaos.NaCl.Benchmark
 
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Console.WriteLine("Architecture: {0} bit", IntPtr.Size * 8);
-            Console.WriteLine("CPU-Frequency: {0} MHz", Cpu.CpuFreq);
-            Cpu.Setup();
+            Console.WriteLine("Assumed CPU-Frequency: {0} MHz", CpuFreq);
             Console.WriteLine();
-            Console.ReadKey();
 
             var m = new byte[100];
             var seed = new byte[32];
@@ -125,9 +123,7 @@ namespace Chaos.NaCl.Benchmark
                 var nonce = new byte[24];
                 Benchmark("HSalsa20Core", () => HSalsa20Core(size), n, size);
                 Benchmark("XSalsa20Poly1305 Encrypt", () => XSalsa20Poly1305.Encrypt(new ArraySegment<byte>(ciphertext), new ArraySegment<byte>(message), new ArraySegment<byte>(key), new ArraySegment<byte>(nonce)), n, size);
-                Benchmark("SHA512Managed", () => new SHA512Managed().ComputeHash(message), n, size);
-                Benchmark("SHA512Cng", () => new SHA512Cng().ComputeHash(message), n, size);
-                Benchmark("SHA512CSP", () => new SHA512CryptoServiceProvider().ComputeHash(message), n, size);
+                Benchmark("SHA512", () => SHA512.HashData(message), n, size);
                 Benchmark("SHA512Chaos", () => Sha512.Hash(message), n, size);
             }
         }
