@@ -8,6 +8,7 @@ EndProject
 Project("{1E322FEA-DA4D-4B56-A557-3F1476862422}") = "Chaos.NaCl.Tests", "Chaos.NaCl.Tests\Chaos.NaCl.Tests.csproj", "{433DF668-E178-4F13-A500-4D3609F450B9}"
 Project("{1E322FEA-DA4D-4B56-A557-3F1476862422}") = "BunnyWhispers", "BunnyWhispers\BunnyWhispers.csproj", "{6CFE5EE2-60C3-422B-8662-5FEEE8C4A65B}"
 EndProject
+Project("{1E322FEA-DA4D-4B56-A557-3F1476862422}") = "BunnyWhispers.Tests", "BunnyWhispers.Tests\BunnyWhispers.Tests.csproj", "{26FDCAAB-67E1-41FD-B6F8-322FE63AA643}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +32,10 @@ Global
 		{6CFE5EE2-60C3-422B-8662-5FEEE8C4A65B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CFE5EE2-60C3-422B-8662-5FEEE8C4A65B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CFE5EE2-60C3-422B-8662-5FEEE8C4A65B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26FDCAAB-67E1-41FD-B6F8-322FE63AA643}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26FDCAAB-67E1-41FD-B6F8-322FE63AA643}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26FDCAAB-67E1-41FD-B6F8-322FE63AA643}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26FDCAAB-67E1-41FD-B6F8-322FE63AA643}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
