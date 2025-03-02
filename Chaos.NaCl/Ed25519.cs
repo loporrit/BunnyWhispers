@@ -108,7 +108,7 @@ namespace Chaos.NaCl
                 privateKeySeed.Array, privateKeySeed.Offset);
         }
 
-        [Obsolete("Needs more testing")]
+        // Needs more testing
         public static byte[] KeyExchange(byte[] publicKey, byte[] privateKey)
         {
             var sharedKey = new byte[SharedKeySizeInBytes];
@@ -116,7 +116,7 @@ namespace Chaos.NaCl
             return sharedKey;
         }
 
-        [Obsolete("Needs more testing")]
+        // Needs more testing
         public static void KeyExchange(ArraySegment<byte> sharedKey, ArraySegment<byte> publicKey, ArraySegment<byte> privateKey)
         {
             if (sharedKey.Array == null)

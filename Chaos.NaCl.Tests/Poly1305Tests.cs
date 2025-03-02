@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Chaos.NaCl.Tests
 {
     [TestClass]
-    class Poly1305Tests
+    public class Poly1305Tests
     {
         [TestMethod]
         public void KeySizeIs32()
@@ -17,7 +17,7 @@ namespace Chaos.NaCl.Tests
         [TestMethod]
         public void SignatureSizeIs16()
         {
-            Assert.AreEqual(32, OneTimeAuth.Poly1305.SignatureSizeInBytes);
+            Assert.AreEqual(16, OneTimeAuth.Poly1305.SignatureSizeInBytes);
         }
     }
 }

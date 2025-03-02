@@ -17,12 +17,6 @@ Most functions come in two variants:
 * An advanced variant which uses `ArraySegment<byte>` to work on slices of the
   passed in arrays. This can be used to avoid unnecessary allocations and copies.
 
-**WARNINGS:**
-
-* The current API is not final. I'll probably modify it.
-* Some functions are marked with the `[Obsolete("Needs more testing")]` attribute.
-  Those should work in principle, but I'm not happy with the unit test coverage.
-
 `Ed25519` (Key-exchange and signatures)
 ===========================
 
