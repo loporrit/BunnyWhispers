@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 
 namespace Chaos.NaCl.Internal.Ed25519Ref10
 {
@@ -10,7 +11,9 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
             int i;
 
             Array.Copy(seed, seedoffset, sk, skoffset, 32);
-            byte[] h = Sha512.Hash(sk, skoffset, 32);//ToDo: Remove alloc
+            SHA512 sha512 = SHA512.Create();
+            byte[] h = sha512.ComputeHash(sk, skoffset, 32);//ToDo: Remove alloc
+            sha512.Dispose();
             ScalarOperations.sc_clamp(h, 0);
 
             GroupOperations.ge_scalarmult_base(out A, h, 0);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 
 namespace Chaos.NaCl.Internal.Ed25519Ref10
 {
@@ -59,11 +60,12 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
             if (GroupOperations.ge_frombytes_negate_vartime(out A, pk, pkoffset) != 0)
                 return false;
 
-            var hasher = new Sha512();
-            hasher.Update(sig, sigoffset, 32);
-            hasher.Update(pk, pkoffset, 32);
-            hasher.Update(m, moffset, mlen);
-            h = hasher.Finish();
+            SHA512 sha512 = SHA512.Create();
+            sha512.TransformBlock(sig, sigoffset, 32, null, 0);
+            sha512.TransformBlock(pk, pkoffset, 32, null, 0);
+            sha512.TransformFinalBlock(m, moffset, mlen);
+            h = sha512.Hash;
+            sha512.Dispose();
 
             ScalarOperations.sc_reduce(h);
 

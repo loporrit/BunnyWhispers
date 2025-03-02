@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Security.Cryptography;
+using Chaos.NaCl.Internal;
 using Chaos.NaCl.Internal.Ed25519Ref10;
 
 namespace Chaos.NaCl
@@ -136,7 +138,16 @@ namespace Chaos.NaCl
             FieldOperations.fe_frombytes(out edwardsY, publicKey.Array, publicKey.Offset);
             FieldOperations.fe_1(out edwardsZ);
             MontgomeryCurve25519.EdwardsToMontgomeryX(out montgomeryX, ref edwardsY, ref edwardsZ);
-            byte[] h = Sha512.Hash(privateKey.Array, privateKey.Offset, 32);//ToDo: Remove alloc
+            byte[] h;
+            SHA512 sha512 = SHA512.Create();
+            try
+            {
+                h = sha512.ComputeHash(privateKey.Array, privateKey.Offset, 32);//ToDo: Remove alloc
+            }
+            finally
+            {
+                sha512.Dispose();
+            }
             ScalarOperations.sc_clamp(h, 0);
             MontgomeryOperations.scalarmult(out sharedMontgomeryX, h, 0, ref montgomeryX);
             CryptoBytes.Wipe(h);
