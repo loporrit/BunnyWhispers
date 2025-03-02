@@ -6,7 +6,6 @@ using System.Globalization;
 using System.Security.Cryptography;
 using System.Threading;
 using Chaos.NaCl.Internal;
-using Chaos.NaCl.Internal.Salsa;
 
 namespace Chaos.NaCl.Benchmark
 {
@@ -112,18 +111,6 @@ namespace Chaos.NaCl.Benchmark
                 Benchmark("KeyExchange", () => MontgomeryCurve25519.KeyExchange(publicKey, seed), n);
                 Console.WriteLine();
             }
-
-            foreach (var size in new[] { 1, 128 * 1024 })
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("=== Symmetric ({0}) ===", SizeToString(size));
-                var message = new byte[size];
-                var ciphertext = new byte[message.Length + 16];
-                var key = new byte[32];
-                var nonce = new byte[24];
-                Benchmark("HSalsa20Core", () => HSalsa20Core(size), n, size);
-                Benchmark("XSalsa20Poly1305 Encrypt", () => XSalsa20Poly1305.Encrypt(new ArraySegment<byte>(ciphertext), new ArraySegment<byte>(message), new ArraySegment<byte>(key), new ArraySegment<byte>(nonce)), n, size);
-            }
         }
 
         private static string SizeToString(int size)
@@ -132,21 +119,6 @@ namespace Chaos.NaCl.Benchmark
                 return String.Format("{0} KiB", size / 1024);
             else
                 return String.Format("{0} B", size);
-        }
-
-        private static void HSalsa20Core(int size)
-        {
-            byte[] input = new byte[64]{
-				        6,124, 83,146, 38,191,9, 50,4,161, 47,222,122,182,223,185,
-				        75, 27,0,216, 16,122,7, 89,162,104,101,147,213, 21, 54, 95,
-				        225,253,139,176,105,132, 23,116, 76, 41,176,207,221, 34,157,108,
-				        94, 94, 99, 52, 90,117, 91,220,146,190,239,143,196,176,130,186};
-            Array16<UInt32> state;
-            ByteIntegerConverter.Array16LoadLittleEndian32(out state, input, 0);
-            for (int i = 0; i < (size + 63) / 64; i++)
-            {
-                SalsaCore.HSalsa(out state, ref state, 20);
-            }
         }
     }
 }

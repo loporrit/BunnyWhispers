@@ -7,8 +7,6 @@ Currently it supports:
 
 * Ed25519 signatures
 * Key-exchange using either Curve25519 (montgomery form) or Ed25519 public keys
-* Authenticated encryption using XSalsa20Poly1305
-* Hashing using SHA-512
 
 Most functions come in two variants:
 
@@ -70,8 +68,8 @@ Returns `true` if the signature is valid, `false` if it is not.
 
     public static byte[] KeyExchange(byte[] publicKey, byte[] privateKey)
 
-Returns a secred shared by the owners of the two keys pairs. This key can be used
-with symmetric cryptography, such as encryption, MACs and authenticated encryption.
+Returns a secred shared by the owners of the two keys pairs. This key should be passed
+through a HKDF or other key derivation function before being used for symmetric cryptography.
 
 This uses Edwards form public keys, but is otherwise identical to `MontgomeryCurve25519.KeyExchange`.
 The advantage of this method is that you can use one keypair for both key-exchange and signing.
@@ -91,11 +89,6 @@ This is about 1.4 times as slow as the equivalent c code.
 =========================================================================
 
 Compatible with NaCl's `crypto_box_beforenm`
-
-`XSalsa20Poly1305` - Authenticates encryption using XSalsa20 as cipher and Poly1305 as MAC
-==========================================================================================
-
-Compatible with NaCl's `crypto_secret_box` and `crypto_box_afternm`.
 
 
 CryptoBytes

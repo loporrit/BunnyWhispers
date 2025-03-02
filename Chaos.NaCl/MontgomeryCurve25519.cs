@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Chaos.NaCl.Internal;
 using Chaos.NaCl.Internal.Ed25519Ref10;
-using Chaos.NaCl.Internal.Salsa;
 
 namespace Chaos.NaCl
 {
@@ -59,52 +58,6 @@ namespace Chaos.NaCl
             FieldOperations.fe_tobytes(publicKey.Array, publicKey.Offset, ref publicKeyFE);
         }
 
-        // hashes like the Curve25519 paper says
-        internal static void KeyExchangeOutputHashCurve25519Paper(byte[] sharedKey, int offset)
-        {
-            //c = Curve25519output
-            const UInt32 c0 = 'C' | 'u' << 8 | 'r' << 16 | (UInt32)'v' << 24;
-            const UInt32 c1 = 'e' | '2' << 8 | '5' << 16 | (UInt32)'5' << 24;
-            const UInt32 c2 = '1' | '9' << 8 | 'o' << 16 | (UInt32)'u' << 24;
-            const UInt32 c3 = 't' | 'p' << 8 | 'u' << 16 | (UInt32)'t' << 24;
-
-            Array16<UInt32> salsaState;
-            salsaState.x0 = c0;
-            salsaState.x1 = ByteIntegerConverter.LoadLittleEndian32(sharedKey, offset + 0);
-            salsaState.x2 = 0;
-            salsaState.x3 = ByteIntegerConverter.LoadLittleEndian32(sharedKey, offset + 4);
-            salsaState.x4 = ByteIntegerConverter.LoadLittleEndian32(sharedKey, offset + 8);
-            salsaState.x5 = c1;
-            salsaState.x6 = ByteIntegerConverter.LoadLittleEndian32(sharedKey, offset + 12);
-            salsaState.x7 = 0;
-            salsaState.x8 = 0;
-            salsaState.x9 = ByteIntegerConverter.LoadLittleEndian32(sharedKey, offset + 16);
-            salsaState.x10 = c2;
-            salsaState.x11 = ByteIntegerConverter.LoadLittleEndian32(sharedKey, offset + 20);
-            salsaState.x12 = ByteIntegerConverter.LoadLittleEndian32(sharedKey, offset + 24);
-            salsaState.x13 = 0;
-            salsaState.x14 = ByteIntegerConverter.LoadLittleEndian32(sharedKey, offset + 28);
-            salsaState.x15 = c3;
-            SalsaCore.Salsa(out salsaState, ref salsaState, 20);
-
-            ByteIntegerConverter.StoreLittleEndian32(sharedKey, offset + 0, salsaState.x0);
-            ByteIntegerConverter.StoreLittleEndian32(sharedKey, offset + 4, salsaState.x1);
-            ByteIntegerConverter.StoreLittleEndian32(sharedKey, offset + 8, salsaState.x2);
-            ByteIntegerConverter.StoreLittleEndian32(sharedKey, offset + 12, salsaState.x3);
-            ByteIntegerConverter.StoreLittleEndian32(sharedKey, offset + 16, salsaState.x4);
-            ByteIntegerConverter.StoreLittleEndian32(sharedKey, offset + 20, salsaState.x5);
-            ByteIntegerConverter.StoreLittleEndian32(sharedKey, offset + 24, salsaState.x6);
-            ByteIntegerConverter.StoreLittleEndian32(sharedKey, offset + 28, salsaState.x7);
-        }
-
-        private static readonly byte[] _zero16 = new byte[16];
-
-        // hashes like the NaCl paper says instead i.e. HSalsa(x,0)
-        internal static void KeyExchangeOutputHashNaCl(byte[] sharedKey, int offset)
-        {
-            Salsa20.HSalsa20(sharedKey, offset, sharedKey, offset, _zero16, 0);
-        }
-
         public static byte[] KeyExchange(byte[] publicKey, byte[] privateKey)
         {
             var sharedKey = new byte[SharedKeySizeInBytes];
@@ -127,7 +80,6 @@ namespace Chaos.NaCl
             if (privateKey.Count != 32)
                 throw new ArgumentException("privateKey.Count != 32");
             MontgomeryOperations.scalarmult(sharedKey.Array, sharedKey.Offset, privateKey.Array, privateKey.Offset, publicKey.Array, publicKey.Offset);
-            KeyExchangeOutputHashNaCl(sharedKey.Array, sharedKey.Offset);
         }
 
         internal static void EdwardsToMontgomeryX(out FieldElement montgomeryX, ref FieldElement edwardsY, ref FieldElement edwardsZ)
