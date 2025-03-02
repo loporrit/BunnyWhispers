@@ -70,12 +70,5 @@ namespace Chaos.NaCl.Tests
                     yield return result;
                 }
         }
-
-        private static byte[] ToArray(this ArraySegment<byte> segment)
-        {
-            var result = new byte[segment.Count];
-            Array.Copy(segment.Array, segment.Offset, result, 0, segment.Count);
-            return result;
-        }
     }
 }

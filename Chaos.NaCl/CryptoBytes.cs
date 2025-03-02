@@ -48,7 +48,7 @@ namespace Chaos.NaCl
             return InternalConstantTimeEquals(x, xOffset, y, yOffset, length) != 0;
         }
 
-        private static uint InternalConstantTimeEquals(byte[] x, int xOffset, byte[] y, int yOffset, int length)
+        internal static uint InternalConstantTimeEquals(byte[] x, int xOffset, byte[] y, int yOffset, int length)
         {
             int differentbits = 0;
             for (int i = 0; i < length; i++)

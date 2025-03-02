@@ -72,7 +72,7 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
             Array.Copy(sig, sigoffset + 32, sm32, 0, 32);
             GroupOperations.ge_double_scalarmult_vartime(out R, h, ref A, sm32);
             GroupOperations.ge_tobytes(checkr, 0, ref R);
-            var result = CryptoBytes.ConstantTimeEquals(checkr, 0, sig, sigoffset, 32);
+            var result = CryptoBytes.InternalConstantTimeEquals(checkr, 0, sig, sigoffset, 32) != 0;
             return result;
         }
     }
