@@ -12,6 +12,7 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
 		*/
 
 		//void fe_cmov(fe f,const fe g,unsigned int b)
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 		internal static void fe_cmov(ref FieldElement f, ref FieldElement g, int b)
 		{
 			Int32 f0 = f.x0;

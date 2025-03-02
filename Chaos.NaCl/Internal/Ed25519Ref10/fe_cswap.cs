@@ -10,6 +10,7 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
 
         Preconditions: b in {0,1}.
         */
+		[System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public static void fe_cswap(ref FieldElement f, ref FieldElement g, uint b)
         {
             Int32 f0 = f.x0;
