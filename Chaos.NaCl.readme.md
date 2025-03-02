@@ -13,7 +13,7 @@ Currently it supports:
 Most functions come in two variants:
 
 * An easy to use variant, where inputs are complete byte arrays and results are
-  returned in newly allocated arrays. 
+  returned in newly allocated arrays.
 * An advanced variant which uses `ArraySegment<byte>` to work on slices of the
   passed in arrays. This can be used to avoid unnecessary allocations and copies.
 
@@ -109,17 +109,9 @@ CryptoBytes
 
 Contains helper functions commonly used in cryptographic code.
 
-    void Wipe(byte[] data)
-
-Overwrites the contents of the array, wiping the previous content. This should be used
-to destroy cryptographic secrets that are no longer required.
-
-Complicating factors like swap files, crash dumps and the moving garbage collector
-reduce the reliability of this function.
-
     public static bool ContantTimeEquals(byte[] x, byte[] y)
 
-Checks if the contents of the two arrays are the same and returns `truie` if they are equal.  
+Checks if the contents of the two arrays are the same and returns `true` if they are equal.
 Throws an expection if their lengthes differ.
 
 The runtime of this method does not depend on the contents of the arrays. Using constant time

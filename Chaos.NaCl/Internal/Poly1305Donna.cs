@@ -105,7 +105,6 @@ namespace Chaos.NaCl.Internal
             t1 = ByteIntegerConverter.LoadLittleEndian32(mp, 4);
             t2 = ByteIntegerConverter.LoadLittleEndian32(mp, 8);
             t3 = ByteIntegerConverter.LoadLittleEndian32(mp, 12);
-            CryptoBytes.Wipe(mp);
 
             h0 += t0 & 0x3ffffff;
             h1 += (uint)(((((UInt64)t1 << 32) | t0) >> 26) & 0x3ffffff);

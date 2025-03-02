@@ -64,7 +64,6 @@ namespace Chaos.NaCl
             byte[] privateKey;
             byte[] publicKey;
             KeyPairFromSeed(out publicKey, out privateKey, privateKeySeed);
-            CryptoBytes.Wipe(privateKey);
             return publicKey;
         }
 
@@ -73,7 +72,6 @@ namespace Chaos.NaCl
             byte[] privateKey;
             byte[] publicKey;
             KeyPairFromSeed(out publicKey, out privateKey, privateKeySeed);
-            CryptoBytes.Wipe(publicKey);
             return privateKey;
         }
 
@@ -150,7 +148,6 @@ namespace Chaos.NaCl
             }
             ScalarOperations.sc_clamp(h, 0);
             MontgomeryOperations.scalarmult(out sharedMontgomeryX, h, 0, ref montgomeryX);
-            CryptoBytes.Wipe(h);
             FieldOperations.fe_tobytes(sharedKey.Array, sharedKey.Offset, ref sharedMontgomeryX);
             MontgomeryCurve25519.KeyExchangeOutputHashNaCl(sharedKey.Array, sharedKey.Offset);
         }

@@ -151,32 +151,6 @@ namespace Chaos.NaCl.Tests
         }
 
         [TestMethod]
-        public void Wipe()
-        {
-            var bytes = (byte[])_bytes.Clone();
-            CryptoBytes.Wipe(bytes);
-            Assert.IsTrue(bytes.All(b => b == 0));
-        }
-
-        [TestMethod]
-        public void WipeInterval()
-        {
-            var bytes = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            var wipedBytes = new byte[] { 1, 2, 0, 0, 0, 0, 0, 8, 9, 10 };
-            CryptoBytes.Wipe(bytes, 2, 5);
-            TestHelpers.AssertEqualBytes(wipedBytes, bytes);
-        }
-
-        [TestMethod]
-        public void WipeSegment()
-        {
-            var bytes = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            var wipedBytes = new byte[] { 1, 2, 0, 0, 0, 0, 0, 8, 9, 10 };
-            CryptoBytes.Wipe(new ArraySegment<byte>(bytes, 2, 5));
-            TestHelpers.AssertEqualBytes(wipedBytes, bytes);
-        }
-
-        [TestMethod]
         public void ConstantTimeEqualsSuccess()
         {
             var x = new byte[] { 1, 2, 3 };
@@ -282,13 +256,6 @@ namespace Chaos.NaCl.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void WipeNullFails()
-        {
-            CryptoBytes.Wipe(null);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ConstantTimeEqualsRangeXmustNotBeNull()
         {
             CryptoBytes.ConstantTimeEquals(null, 0, new byte[10], 0, 1);
@@ -335,41 +302,6 @@ namespace Chaos.NaCl.Tests
         public void ConstantTimeEqualsRangeLengthTooBigY()
         {
             CryptoBytes.ConstantTimeEquals(new byte[10], 1, new byte[10], 8, 7);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void WipeSegmentNullFails()
-        {
-            CryptoBytes.Wipe(default(ArraySegment<byte>));
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void WipeRangeNullFails()
-        {
-            CryptoBytes.Wipe(null, 0, 0);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void WipeRangeNegativeOffsetFails()
-        {
-            CryptoBytes.Wipe(new byte[10], -1, 0);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void WipeRangeNegativeLengthFails()
-        {
-            CryptoBytes.Wipe(new byte[10], 0, -1);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void WipeRangeTooLargeLengthFails()
-        {
-            CryptoBytes.Wipe(new byte[10], 8, 8);
         }
         #endregion
     }

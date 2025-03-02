@@ -76,7 +76,6 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
 				Array.Copy(sig, sigoffset + 32, s, 0, 32);
 				ScalarOperations.sc_muladd(s, hram, az, r);
 				Array.Copy(s, 0, sig, sigoffset + 32, 32);
-				CryptoBytes.Wipe(s);
 			}
 			sha512.Dispose();
 		}

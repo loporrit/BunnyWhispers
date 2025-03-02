@@ -199,7 +199,6 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
 			FieldOperations.fe_invert(out z2, ref z2);
 			FieldOperations.fe_mul(out x2, ref x2, ref z2);
 			q = x2;
-			CryptoBytes.Wipe(e);
 		}
 	}
 }

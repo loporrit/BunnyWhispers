@@ -20,7 +20,6 @@ namespace Chaos.NaCl.Internal.Ed25519Ref10
             GroupOperations.ge_p3_tobytes(pk, pkoffset, ref A);
 
             for (i = 0; i < 32; ++i) sk[skoffset + 32 + i] = pk[pkoffset + i];
-            CryptoBytes.Wipe(h);
         }
     }
 }
